@@ -1,85 +1,70 @@
 "use client";
-
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown } from "lucide-react"; // modern icon
 
-const faqs = [
-  {
-    question: "What is React?",
-    answer:
-      "React is a JavaScript library for building user interfaces. It lets you create reusable, dynamic UI components that make apps fast and interactive.",
-  },
-  {
-    question: "What is a component?",
-    answer:
-      "A component is a self-contained piece of the UI that manages its own structure, style, and behavior. Think of it as a reusable building block.",
-  },
-  {
-    question: "What is useState?",
-    answer:
-      "useState is a React Hook that lets you add state variables to functional components, allowing your UI to respond to user interactions.",
-  },
+const users = [
+  { name: "Ava Martin", role: "Designer" },
+  { name: "Leo Carter", role: "Engineer" },
+  { name: "Maya Patel", role: "Product Manager" },
+  { name: "Noah Kim", role: "Engineer" },
+  { name: "Zoe Li", role: "Designer" },
 ];
 
-const FAQ = () => {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+export default function UserSearch() {
+  const [search, setSearch] = useState("");
+  const [role, setRole] = useState("All");
 
-  const toggleFAQ = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
+  const filtered = users.filter(
+    (u) =>
+      (role === "All" || u.role === role) &&
+      u.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
-    <div className="max-w-2xl mx-auto mt-16 px-6">
-      {/* Gradient header */}
-      <h1 className="text-4xl font-bold text-center bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-        Frequently Asked Questions
+    <div className="max-w-md mx-auto mt-12 p-6 bg-white shadow-lg rounded-2xl border border-gray-200">
+      <h1 className="text-2xl font-bold mb-4 text-center text-gray-800">
+        User Directory
       </h1>
-      <p className="text-center text-gray-500 mt-3 mb-8">
-        Everything you need to know about this project.
-      </p>
 
-      <div className="space-y-4">
-        {faqs.map((faq, index) => (
-          <div
-            key={index}
-            onClick={() => toggleFAQ(index)}
-            className={`border rounded-2xl p-5 cursor-pointer transition-all duration-300 ${
-              openIndex === index
-                ? "bg-gradient-to-r from-blue-50 to-purple-50 border-blue-400 shadow-md"
-                : "bg-white hover:shadow-sm border-gray-200"
-            }`}
-          >
-            <div className="flex justify-between items-center">
-              <h2 className="text-lg font-semibold text-gray-900">
-                {faq.question}
-              </h2>
-              <motion.div
-                animate={{ rotate: openIndex === index ? 180 : 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <ChevronDown className="w-5 h-5 text-gray-500" />
-              </motion.div>
-            </div>
+      {/* Search + Filter Controls */}
+      <div className="flex gap-3 mb-4">
+        <input
+          type="text"
+          placeholder="Search user..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="flex-1 border px-3 py-2 rounded-lg outline-none focus:ring-2 focus:ring-blue-400 transition"
+        />
 
-            <AnimatePresence>
-              {openIndex === index && (
-                <motion.p
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.35 }}
-                  className="mt-3 text-gray-600 leading-relaxed"
-                >
-                  {faq.answer}
-                </motion.p>
-              )}
-            </AnimatePresence>
-          </div>
-        ))}
+        <select
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+          className="border px-3 py-2 rounded-lg outline-none focus:ring-2 focus:ring-purple-400 transition"
+        >
+          <option>All</option>
+          <option>Designer</option>
+          <option>Engineer</option>
+          <option>Product Manager</option>
+        </select>
       </div>
+
+      {/* Filtered Results */}
+      <ul className="space-y-2">
+        {filtered.length > 0 ? (
+          filtered.map((user) => (
+            <li
+              key={user.name}
+              className="border rounded-lg px-4 py-2 flex justify-between items-center hover:bg-gray-50 transition"
+            >
+              <span className="font-medium text-gray-800">{user.name}</span>
+              <span className="text-sm text-gray-500">{user.role}</span>
+            </li>
+          ))
+        ) : (
+          <p className="text-center text-gray-500 mt-4">
+            No matching users found
+          </p>
+        )}
+      </ul>
     </div>
   );
-};
-
-export default FAQ;
+}
