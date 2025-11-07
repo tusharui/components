@@ -9,7 +9,7 @@ const users = [
   { name: "Zoe Li", role: "Designer" },
 ];
 
-export default function UserSearch() {
+export default function Searchable() {
   const [search, setSearch] = useState("");
   const [role, setRole] = useState("All");
 
