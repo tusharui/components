@@ -12,7 +12,7 @@ export default function ProgressBar() {
 
   return (
     <div className="max-w-md mx-auto mt-16 p-6 bg-white shadow-lg rounded-xl">
-      <h1 className="text-xl font-bold text-center mb-4">Progress Bar</h1>
+      <h1 className="text-xl font-mono font-medium text-center mb-4">Progress Bar</h1>
 
       {/* Progress bar container */}
       <div className="w-full h-4 bg-gray-200 rounded-full overflow-hidden mb-4">
